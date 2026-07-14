@@ -1,0 +1,45 @@
+plugins {
+    // NeoForge 官方 userdev 插件。版本格式为 "<minecraft>-<neoforge>"，
+    // 由 gradle.properties 中的 minecraft_version 与 neoforge_version 拼接。
+    id 'net.neoforged.gradle.userdev' version "${minecraft_version}-${neoforge_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = 'mrkun-bypass-neoforge'
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
+}
+
+repositories {
+    maven { url 'https://maven.neoforged.net/releases/' }
+    mavenCentral()
+}
+
+minecraft {
+    runs {
+        client {
+            workingDirectory = project.file('run')
+        }
+    }
+}
+
+dependencies {
+    implementation "net.neoforged:neoforge:${minecraft_version}-${neoforge_version}"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    manifest {
+        attributes(['Implementation-Title': project.name, 'Implementation-Version': project.version])
+    }
+    archiveClassifier = ''
+}

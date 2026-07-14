@@ -121,6 +121,19 @@ allprojects {
 }
 ```
 
+## NeoForge 版本（独立子项目）
+
+NeoForge 是另一套加载器，API 与 Fabric 完全不同，因此 1.21.8 的 NeoForge 版本作为**独立子项目**放在 `neoforge/` 目录，与 Fabric 代码完全分离、互不影响。
+
+### 构建 NeoForge 版本
+```
+cd neoforge
+./gradlew build        # Windows: gradlew.bat build
+```
+产物：`neoforge/build/libs/mrkun-bypass-neoforge-1.2.0.jar`
+
+> 构建前请确认 `neoforge/gradle.properties` 中的 `neoforge_version` 与 MC 1.21.8 对应的 NeoForge 发布版本一致（如不确定，到 https://maven.neoforged.net/releases/net/neoforged/neoforge/ 核对）。
+
 ## 安装方法
 1. 安装对应版本的 Minecraft 和 Fabric Loader
 2. 安装对应版本的 Fabric API

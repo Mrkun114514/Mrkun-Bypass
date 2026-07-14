@@ -1,0 +1,17 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="mrkunbypass"
+version="1.2.0"
+displayName="Mrkun Bypass"
+authors="Mrkun114514"
+description="一个娱乐模组，模拟开挂风格的切换提示但不会真正作弊。"
+
+[[dependencies.mrkunbypass]]
+modId="neoforge"
+type="required"
+versionRange="[21.8,)"
+ordering="NONE"
+side="CLIENT"
