@@ -1,7 +1,6 @@
 plugins {
-    // NeoForge 官方 userdev 插件。版本号就是插件自己的版本，
-    // 与 NeoForge 游戏版本无关（游戏版本在 dependencies 里指定）。
-    id 'net.neoforged.gradle.userdev' version '7.0.145'
+    // NeoForge 官方 moddev（原 userdev 的继任者）
+    id 'net.neoforged.gradle.moddev' version '1.0.24'
     id 'java'
 }
 
@@ -17,22 +16,16 @@ java {
     withSourcesJar()
 }
 
-repositories {
-    maven { url 'https://maven.neoforged.net/releases/' }
-    mavenCentral()
-}
+neoForge {
+    // NeoForge 依赖版本
+    version = project.neoforge_version
 
-minecraft {
+    // 默认客户端运行配置
     runs {
         client {
-            workingDirectory = project.file('run')
+            client()
         }
     }
-}
-
-dependencies {
-    // NeoForge 1.21.8 最新稳定版本
-    implementation "net.neoforged:neoforge:${neoforge_version}"
 }
 
 tasks.withType(JavaCompile).configureEach {
