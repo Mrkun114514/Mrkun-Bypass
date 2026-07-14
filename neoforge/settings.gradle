@@ -1,14 +1,14 @@
-plugins {
-    // 让 Gradle 自动下载 JDK 21 工具链（若本机已安装 JDK 21，则会优先使用本地）
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
-}
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
         maven { url 'https://maven.neoforged.net/releases/' }
         mavenCentral()
     }
+}
+
+plugins {
+    // 让 Gradle 自动下载 JDK 21 工具链（若本机已安装 JDK 21，则会优先使用本地）
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }
 
 rootProject.name = 'mrkun-bypass-neoforge'
