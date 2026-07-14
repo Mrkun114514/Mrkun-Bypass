@@ -2,7 +2,7 @@ package com.mrkun.bypass.client;
 
 import com.mrkun.bypass.config.BypassConfig;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.sound.SoundCategory;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -24,9 +24,9 @@ public class BypassMessage {
 
         if (BypassConfig.isSoundEffects()) {
             if (enabled) {
-                client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_CHIME.value(), SoundCategory.MASTER, 1.0f, 1.5f);
+                client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.BLOCK_NOTE_BLOCK_CHIME.value(), 1.5f));
             } else {
-                client.player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BASS.value(), SoundCategory.MASTER, 1.0f, 0.5f);
+                client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.BLOCK_NOTE_BLOCK_BASS.value(), 0.5f));
             }
         }
     }

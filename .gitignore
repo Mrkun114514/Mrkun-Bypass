@@ -30,3 +30,9 @@ logs/
 
 # Local config
 local.properties
+
+# Agent / workspace memory (never commit)
+.workbuddy/
+
+# Local compile-only dependency (provided via Maven instead)
+libs/

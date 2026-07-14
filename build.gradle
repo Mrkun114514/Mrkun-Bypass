@@ -18,6 +18,7 @@ if (versionDir.exists()) {
 repositories {
 	maven { url 'https://bmclapi2.bangbang93.com/maven' }
 	maven { url 'https://maven.fabricmc.net/' }
+	maven { url 'https://maven.terraformersmc.com/' }
 	mavenCentral()
 }
 
@@ -26,7 +27,7 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modCompileOnly files("libs/modmenu-11.0.0.jar")
+	modCompileOnly "com.terraformersmc:modmenu:11.0.0"
 }
 
 processResources {
@@ -52,6 +53,27 @@ jar {
 	}
 	archiveClassifier = ""
 	archiveVersion = "${project.mod_version}-mc${project.minecraft_version}"
+}
+
+// 一键构建 versions/ 目录下的所有 Minecraft 版本
+// 用法：gradlew.bat buildAllVersions
+def buildAllVersions = tasks.register('buildAllVersions') {
+	group = 'build'
+	description = '依次构建 versions/ 目录下声明的所有 Minecraft 版本'
+}
+
+def isWindows = org.gradle.internal.os.OperatingSystem.current().isWindows()
+def wrapperCmd = isWindows ? "${rootDir}/gradlew.bat" : "${rootDir}/gradlew"
+
+file('versions').eachDir { dir ->
+	def mcv = dir.name
+	def subTask = tasks.register("build_${mcv.replace('.', '_')}", Exec) {
+		group = 'build'
+		description = "构建 Minecraft ${mcv}"
+		workingDir = rootDir
+		commandLine wrapperCmd, 'clean', 'build', "-Pminecraft_version=${mcv}"
+	}
+	buildAllVersions.configure { dependsOn subTask }
 }
 
 publishing {
