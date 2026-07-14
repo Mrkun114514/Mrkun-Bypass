@@ -1,5 +1,6 @@
 plugins {
-    // NeoForge 官方 moddev（原 userdev 的继任者）
+    // NeoForge 1.21.x 官方 moddev 插件（userdev 的继任者）
+    // 若 1.0.24 找不到，请到 https://plugins.gradle.org/plugin/net.neoforged.gradle.moddev 查看最新版本号。
     id 'net.neoforged.gradle.moddev' version '1.0.24'
     id 'java'
 }
@@ -17,7 +18,7 @@ java {
 }
 
 neoForge {
-    // NeoForge 依赖版本
+    // NeoForge 依赖版本，来自 gradle.properties 的 neoforge_version
     version = project.neoforge_version
 
     // 默认客户端运行配置
