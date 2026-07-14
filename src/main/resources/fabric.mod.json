@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "mrkunbypass",
+  "version": "${version}",
+  "name": "Mrkun Bypass",
+  "description": "一个娱乐模组，模拟开挂风格的切换提示但不会真正作弊。",
+  "authors": [
+    "Mrkun114514"
+  ],
+  "contributors": [
+    "Mrkun114514"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+  "license": "MIT",
+  "icon": "assets/mrkunbypass/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.mrkun.bypass.MrkunBypassClient"
+    ],
+    "modmenu": [
+      "com.mrkun.bypass.integration.ModMenuIntegration"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": ">=1.20.1 <1.22",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "modmenu": ">=11.0.0"
+  }
+}

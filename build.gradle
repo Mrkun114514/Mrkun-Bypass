@@ -1,0 +1,71 @@
+plugins {
+	id 'fabric-loom' version '1.8-SNAPSHOT'
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+def versionDir = file("versions/${project.minecraft_version}")
+if (versionDir.exists()) {
+	Properties versionProps = new Properties()
+	file("versions/${project.minecraft_version}/gradle.properties").withInputStream { versionProps.load(it) }
+	project.ext.set('yarn_mappings', versionProps.getProperty('yarn_mappings'))
+	project.ext.set('loader_version', versionProps.getProperty('loader_version'))
+	project.ext.set('fabric_version', versionProps.getProperty('fabric_version'))
+}
+
+repositories {
+	maven { url 'https://bmclapi2.bangbang93.com/maven' }
+	maven { url 'https://maven.fabricmc.net/' }
+	mavenCentral()
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modCompileOnly files("libs/modmenu-11.0.0.jar")
+}
+
+processResources {
+	inputs.property "version", project.version
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 21
+}
+
+java {
+	withSourcesJar()
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
+}
+
+jar {
+	from("LICENSE") {
+		rename { "${it}_${project.archives_base_name}"}
+	}
+	archiveClassifier = ""
+	archiveVersion = "${project.mod_version}-mc${project.minecraft_version}"
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+	repositories {
+	}
+}
+
+task buildAllVersions {
+	description 'Build all supported versions'
+	group 'build'
+	dependsOn versions.getSubprojects().collect { ":${it.name}:build" }
+}
