@@ -1,6 +1,6 @@
 plugins {
-    // 让 Gradle 自动下载 JDK 21 工具链
-    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.9.0'
+    // 让 Gradle 自动下载 JDK 21 工具链（若本机已安装 JDK 21，则会优先使用本地）
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }
 
 pluginManagement {
