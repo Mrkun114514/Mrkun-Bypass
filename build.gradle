@@ -64,8 +64,3 @@ publishing {
 	}
 }
 
-task buildAllVersions {
-	description 'Build all supported versions'
-	group 'build'
-	dependsOn versions.getSubprojects().collect { ":${it.name}:build" }
-}
