@@ -209,7 +209,10 @@ public class BypassMenuScreen extends Screen {
         private final String moduleName;
 
         public ModuleButton(int x, int y, int width, int height, String moduleName, OnPress onPress) {
-            super(x, y, width, height, Component.literal(moduleName), onPress, (button) -> Component.literal(moduleName));
+            super(x, y, width, height,
+                    Component.translatable("key.mrkunbypass." + moduleName.toLowerCase()),
+                    onPress,
+                    (button) -> Component.translatable("key.mrkunbypass." + moduleName.toLowerCase()));
             this.moduleName = moduleName;
             updateState();
         }
@@ -220,8 +223,9 @@ public class BypassMenuScreen extends Screen {
             ChatFormatting bracketColor = ChatFormatting.GRAY;
             String status = enabled ? "ON" : "OFF";
             String arrow = enabled ? ">> " : " ";
-            this.setMessage(Component.literal(arrow + moduleName + " ").withStyle(ChatFormatting.WHITE)
-                    .append(Component.literal("[").withStyle(bracketColor))
+            this.setMessage(Component.literal(arrow).withStyle(ChatFormatting.WHITE)
+                    .append(Component.translatable("key.mrkunbypass." + moduleName.toLowerCase()).withStyle(ChatFormatting.WHITE))
+                    .append(Component.literal(" [").withStyle(bracketColor))
                     .append(Component.literal(status).withStyle(statusColor, ChatFormatting.BOLD))
                     .append(Component.literal("]").withStyle(bracketColor)));
         }
@@ -229,6 +233,7 @@ public class BypassMenuScreen extends Screen {
         @Override
         public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
             if (!this.visible) return;
+            updateState(); // 每帧同步开关状态，避免用热键切换后菜单文字不刷新
 
             boolean enabled = BypassConfig.isModuleEnabled(moduleName);
             int catColor = BypassConfig.getCategoryColor(moduleName);
