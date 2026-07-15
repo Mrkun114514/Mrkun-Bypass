@@ -12,7 +12,7 @@ public class BypassMenuScreen extends Screen {
     private static final int BUTTON_WIDTH = 200;
     private static final int BUTTON_HEIGHT = 25;
     private static final int BUTTON_SPACING = 5;
-    private static final int TOP_MARGIN = 60;
+    private static final int TOP_MARGIN = 66;
     private static final int BOTTOM_MARGIN = 40;
     private static final int STATISTICS_HEIGHT = 60;
 
@@ -122,15 +122,25 @@ public class BypassMenuScreen extends Screen {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 
-        guiGraphics.drawCenteredString(this.font,
-                Component.literal("Mrkun Bypass").withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD)
-                        .append(Component.literal(" | ").withStyle(ChatFormatting.GRAY))
-                        .append(Component.translatable("gui.mrkunbypass.menu.title").withStyle(ChatFormatting.RED)),
-                this.width / 2, 20, 0xFFFFFF);
+        // 顶部主题色带 + 随时间脉动的霓虹强调线（让界面更有辨识度）
+        guiGraphics.fillGradient(0, 0, this.width, 50, 0xFF1A1330, 0xFF0B0B14);
+        int pulse = 140 + (int) (Math.sin(System.currentTimeMillis() / 350.0) * 100);
+        int accent = (0xFF << 24) | (0x9B << 16) | (0x5C << 8) | Math.min(255, pulse);
+        guiGraphics.fill(0, 49, this.width, 51, accent);
 
-        guiGraphics.drawCenteredString(this.font,
-                Component.translatable("gui.mrkunbypass.menu.close_hint").withStyle(ChatFormatting.GRAY),
-                this.width / 2, 36, 0xAAAAAA);
+        guiGraphics.drawCenteredString(BypassMenuScreen.this.font,
+                Component.literal("Mrkun").withStyle(ChatFormatting.WHITE, ChatFormatting.BOLD)
+                        .append(Component.literal(" Bypass").withStyle(ChatFormatting.RED, ChatFormatting.BOLD)),
+                this.width / 2, 12, 0xFFFFFF);
+
+        guiGraphics.drawCenteredString(BypassMenuScreen.this.font,
+                Component.literal("// ").withStyle(ChatFormatting.DARK_GRAY)
+                        .append(Component.translatable("gui.mrkunbypass.menu.title").withStyle(ChatFormatting.GRAY)),
+                this.width / 2, 30, 0xAAAAAA);
+
+        guiGraphics.drawCenteredString(BypassMenuScreen.this.font,
+                Component.translatable("gui.mrkunbypass.menu.close_hint").withStyle(ChatFormatting.DARK_GRAY),
+                this.width / 2, 58, 0x888888);
 
         int listHeight = Math.max(0, listBottom - listTop);
         int maxScroll = Math.max(0, contentHeight - listHeight);
@@ -182,14 +192,14 @@ public class BypassMenuScreen extends Screen {
     }
 
     @Override
-    public boolean shouldPause() {
+    public boolean isPauseScreen() {
         return false;
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (keyCode == 72) {
-            this.close();
+            if (this.minecraft != null) this.minecraft.setScreen(null);
             return true;
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
@@ -221,26 +231,51 @@ public class BypassMenuScreen extends Screen {
             if (!this.visible) return;
 
             boolean enabled = BypassConfig.isModuleEnabled(moduleName);
+            int catColor = BypassConfig.getCategoryColor(moduleName);
             int bgColor;
             int bgHoverColor;
 
             if (this.isHovered()) {
-                bgColor = enabled ? 0x8000AA00 : 0x80AA0000;
-                bgHoverColor = enabled ? 0xA000DD00 : 0xA0DD0000;
+                bgColor = enabled ? 0x80104050 : 0x80202028;
+                bgHoverColor = enabled ? 0xA0185058 : 0xA028282F;
             } else {
-                bgColor = enabled ? 0x50006600 : 0x50660000;
+                bgColor = enabled ? 0x500A2A30 : 0x50141418;
                 bgHoverColor = bgColor;
+            }
+
+            // 启用时的外发光（品类色脉动）
+            if (enabled) {
+                int glow = 50 + (int) (Math.sin(System.currentTimeMillis() / 220.0) * 35);
+                int glowCol = (glow << 24) | (catColor & 0x00FFFFFF);
+                guiGraphics.fill(this.getX() - 2, this.getY() - 2,
+                        this.getX() + this.width + 2, this.getY() + this.height + 2, glowCol);
             }
 
             guiGraphics.fillGradient(this.getX(), this.getY(), this.getX() + this.width, this.getY() + this.height, bgColor, bgHoverColor);
 
-            int borderColor = enabled ? 0xFF55FF55 : 0xFFFF5555;
-            guiGraphics.drawBorder(this.getX(), this.getY(), this.width, this.height, borderColor);
+            // 左侧分类色条
+            guiGraphics.fill(this.getX(), this.getY(), this.getX() + 4, this.getY() + this.height, catColor);
 
-            guiGraphics.drawCenteredString(this.font, this.getMessage(),
-                    this.getX() + this.width / 2,
+            // 边框：启用时用品类色脉动，否则暗灰
+            int border = enabled ? catColor : 0xFF3A3A42;
+            if (enabled) {
+                int a = 0x80 + (int) (Math.sin(System.currentTimeMillis() / 220.0) * 0x60);
+                border = (a << 24) | (catColor & 0x00FFFFFF);
+            }
+            guiGraphics.renderOutline(this.getX(), this.getY(), this.width, this.height, border);
+
+            // 主文本（右移避开色条）
+            guiGraphics.drawCenteredString(BypassMenuScreen.this.font, this.getMessage(),
+                    this.getX() + this.width / 2 + 2,
                     this.getY() + (this.height - 8) / 2,
                     0xFFFFFF);
+
+            // 右下角分类标签
+            String cat = BypassConfig.getCategory(moduleName).toUpperCase();
+            guiGraphics.drawString(BypassMenuScreen.this.font, cat,
+                    this.getX() + this.width - BypassMenuScreen.this.font.width(cat) - 6,
+                    this.getY() + this.height - 11,
+                    catColor);
         }
     }
 }

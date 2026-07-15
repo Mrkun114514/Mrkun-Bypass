@@ -21,13 +21,13 @@ public class BypassMessage {
 
         MutableComponent message = prefix.append(separator).append(module)
                 .append(Component.literal(" ").withStyle(ChatFormatting.RESET)).append(status);
-        mc.player.sendSystemMessage(message);
+        mc.player.displayClientMessage(message, false);
 
         if (BypassConfig.isSoundEffects()) {
             if (enabled) {
-                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BLOCK_NOTE_BLOCK_CHIME, 1.5f));
+                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_CHIME, 1.5f));
             } else {
-                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BLOCK_NOTE_BLOCK_BASS, 0.5f));
+                mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BASS, 0.5f));
             }
         }
     }

@@ -69,7 +69,7 @@ public class ConfigScreen extends Screen {
 
         y += 40;
 
-        this.addRenderableWidget(Button.builder(Component.translatable("gui.mrkunbypass.config.done"), btn -> this.close())
+        this.addRenderableWidget(Button.builder(Component.translatable("gui.mrkunbypass.config.done"), btn -> this.minecraft.setScreen(this.parent))
                 .bounds(x, y, buttonWidth, 20)
                 .build());
     }
@@ -125,7 +125,7 @@ public class ConfigScreen extends Screen {
     }
 
     @Override
-    public void close() {
-        this.minecraft.setScreen(parent);
+    public void onClose() {
+        if (this.minecraft != null) this.minecraft.setScreen(parent);
     }
 }

@@ -39,10 +39,63 @@ public class BypassConfig {
         MODULE_STATES.put("AimBot", false);
         MODULE_STATES.put("ESP", false);
         MODULE_STATES.put("AntiCheat", false);
+        // ---- 扩展的 10 个「假开挂」娱乐模块（仅视觉/提示，不真正作弊）----
+        MODULE_STATES.put("Reach", false);
+        MODULE_STATES.put("Step", false);
+        MODULE_STATES.put("Jetpack", false);
+        MODULE_STATES.put("Tracer", false);
+        MODULE_STATES.put("TriggerBot", false);
+        MODULE_STATES.put("Scaffold", false);
+        MODULE_STATES.put("Velocity", false);
+        MODULE_STATES.put("NoClip", false);
+        MODULE_STATES.put("FastPlace", false);
+        MODULE_STATES.put("HitBox", false);
+    }
+
+    /** 模块分类，用于菜单里的颜色分区（纯装饰，不影响功能）。 */
+    private static final java.util.Map<String, String> MODULE_CATEGORY = new java.util.HashMap<>();
+    static {
+        MODULE_CATEGORY.put("Fly", "Movement");
+        MODULE_CATEGORY.put("Speed", "Movement");
+        MODULE_CATEGORY.put("Sprint", "Movement");
+        MODULE_CATEGORY.put("AutoJump", "Movement");
+        MODULE_CATEGORY.put("NoFall", "Movement");
+        MODULE_CATEGORY.put("Jetpack", "Movement");
+        MODULE_CATEGORY.put("Step", "Movement");
+        MODULE_CATEGORY.put("Velocity", "Movement");
+        MODULE_CATEGORY.put("NoClip", "Movement");
+        MODULE_CATEGORY.put("KillAura", "Combat");
+        MODULE_CATEGORY.put("AimBot", "Combat");
+        MODULE_CATEGORY.put("TriggerBot", "Combat");
+        MODULE_CATEGORY.put("Reach", "Combat");
+        MODULE_CATEGORY.put("Xray", "Render");
+        MODULE_CATEGORY.put("Fullbright", "Render");
+        MODULE_CATEGORY.put("ESP", "Render");
+        MODULE_CATEGORY.put("Tracer", "Render");
+        MODULE_CATEGORY.put("HitBox", "Render");
+        MODULE_CATEGORY.put("AntiCheat", "Player");
+        MODULE_CATEGORY.put("Scaffold", "Player");
+        MODULE_CATEGORY.put("FastPlace", "Player");
+    }
+
+    private static final java.util.Map<String, Integer> CATEGORY_COLOR = new java.util.HashMap<>();
+    static {
+        CATEGORY_COLOR.put("Combat", 0xFFE5484D);   // 红
+        CATEGORY_COLOR.put("Movement", 0xFF3FA7FF);  // 蓝
+        CATEGORY_COLOR.put("Render", 0xFF9B5CFF);    // 紫
+        CATEGORY_COLOR.put("Player", 0xFFFFB000);    // 金
+    }
+
+    public static String getCategory(String moduleName) {
+        return MODULE_CATEGORY.getOrDefault(moduleName, "Player");
+    }
+
+    public static int getCategoryColor(String moduleName) {
+        return CATEGORY_COLOR.getOrDefault(getCategory(moduleName), 0xFFFFB000);
     }
 
     private static Path configDir() {
-        return FMLPaths.GAME_DIR.get().resolve(CONFIG_FOLDER);
+        return FMLPaths.GAMEDIR.get().resolve(CONFIG_FOLDER);
     }
 
     private static Path configPath() {

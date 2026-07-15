@@ -1,8 +1,7 @@
 plugins {
-    // NeoForge 1.21.x 官方 moddev 插件
-    // 最新版本可到 https://plugins.gradle.org/plugin/net.neoforged.moddev 查看
-    id 'net.neoforged.moddev' version '2.0.141'
     id 'java'
+    id 'idea'
+    id 'net.neoforged.moddev' version '2.0.141'
 }
 
 version = project.mod_version
@@ -18,10 +17,8 @@ java {
 }
 
 neoForge {
-    // NeoForge 依赖版本，来自 gradle.properties 的 neoforge_version
     version = project.neoforge_version
 
-    // 默认客户端运行配置
     runs {
         client {
             client()
