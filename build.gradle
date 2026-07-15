@@ -6,6 +6,10 @@ plugins {
 version = project.mod_version
 group = project.maven_group
 
+base {
+    archivesName = "mrkun-bypass-${project.minecraft_version}"
+}
+
 def versionDir = file("versions/${project.minecraft_version}")
 if (versionDir.exists()) {
 	Properties versionProps = new Properties()
@@ -16,6 +20,7 @@ if (versionDir.exists()) {
 }
 
 repositories {
+	mavenLocal()
 	maven { url 'https://bmclapi2.bangbang93.com/maven' }
 	maven { url 'https://maven.fabricmc.net/' }
 	maven { url 'https://maven.terraformersmc.com/' }
@@ -27,7 +32,7 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modCompileOnly "com.terraformersmc:modmenu:11.0.0"
+	modCompileOnly files("libs/modmenu-${project.modmenu_version}.jar")
 }
 
 processResources {
@@ -51,8 +56,6 @@ jar {
 	from("LICENSE") {
 		rename { "${it}_${project.archives_base_name}"}
 	}
-	archiveClassifier = ""
-	archiveVersion = "${project.mod_version}-mc${project.minecraft_version}"
 }
 
 // 一键构建 versions/ 目录下的所有 Minecraft 版本

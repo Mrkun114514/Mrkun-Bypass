@@ -17,11 +17,21 @@ java {
 }
 
 neoForge {
-    version = project.neoforge_version
+    enable {
+        version = project.neoforge_version
+    }
 
     runs {
         client {
             client()
+        }
+    }
+
+    addModdingDependenciesTo sourceSets.main
+
+    mods {
+        mrkunbypass {
+            sourceSet sourceSets.main
         }
     }
 }
