@@ -202,7 +202,7 @@ public class BypassMenuScreen extends Screen {
         private final String moduleName;
 
         public ModuleButton(int x, int y, int width, int height, String message, PressAction onPress) {
-            super(x, y, width, height, Text.literal(message), onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
+            super(x, y, width, height, Text.translatable("key.mrkunbypass." + message.toLowerCase()), onPress, ButtonWidget.DEFAULT_NARRATION_SUPPLIER);
             this.moduleName = message;
             updateState();
         }
@@ -213,8 +213,9 @@ public class BypassMenuScreen extends Screen {
             Formatting bracketColor = Formatting.GRAY;
             String status = enabled ? "ON" : "OFF";
             String arrow = enabled ? ">> " : " ";
-            this.setMessage(Text.literal(arrow + moduleName + " ").formatted(Formatting.WHITE)
-                    .append(Text.literal("[").formatted(bracketColor))
+            this.setMessage(Text.literal(arrow).formatted(Formatting.WHITE)
+                    .append(Text.translatable("key.mrkunbypass." + moduleName.toLowerCase()).formatted(Formatting.WHITE))
+                    .append(Text.literal(" [").formatted(bracketColor))
                     .append(Text.literal(status).formatted(statusColor, Formatting.BOLD))
                     .append(Text.literal("]").formatted(bracketColor)));
         }
@@ -222,6 +223,7 @@ public class BypassMenuScreen extends Screen {
         @Override
         public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
             if (!this.visible) return;
+            updateState(); // 每帧同步开关状态，避免用热键切换后菜单文字不刷新
 
             boolean enabled = BypassConfig.isModuleEnabled(moduleName);
             int bgColor;
