@@ -269,9 +269,11 @@ public class BypassMenuScreen extends Screen {
             }
             guiGraphics.renderOutline(this.getX(), this.getY(), this.width, this.height, border);
 
-            // 主文本（右移避开色条）
-            guiGraphics.drawCenteredString(BypassMenuScreen.this.font, this.getMessage(),
-                    this.getX() + this.width / 2 + 2,
+            // 主文本（功能名，使用 drawString 手动居中，避免部分环境下 drawCenteredString 不绘制 Component 的问题）
+            Component msg = this.getMessage();
+            int textX = this.getX() + this.width / 2 - BypassMenuScreen.this.font.width(msg) / 2;
+            guiGraphics.drawString(BypassMenuScreen.this.font, msg,
+                    textX,
                     this.getY() + (this.height - 8) / 2,
                     0xFFFFFF);
 
