@@ -14,10 +14,10 @@ public class BypassMessage {
         MinecraftClient client = MinecraftClient.getInstance();
         if (client.player == null) return;
 
-        MutableText prefix = Text.literal("Mrkun Bypass").formatted(Formatting.WHITE);
-        MutableText separator = Text.literal("：").formatted(Formatting.WHITE);
-        MutableText module = Text.literal(moduleName).formatted(Formatting.RED);
-        MutableText status = Text.literal(enabled ? "已开启！" : "已关闭！").formatted(Formatting.RED);
+        MutableText prefix = Text.translatable("message.mrkunbypass.prefix").formatted(Formatting.WHITE);
+        MutableText separator = Text.translatable("message.mrkunbypass.separator").formatted(Formatting.WHITE);
+        MutableText module = Text.translatable("key.mrkunbypass." + moduleName.toLowerCase()).formatted(Formatting.RED);
+        MutableText status = Text.translatable(enabled ? "message.mrkunbypass.on" : "message.mrkunbypass.off").formatted(Formatting.RED);
 
         MutableText message = prefix.append(separator).append(module).append(Text.literal(" ").formatted(Formatting.RESET)).append(status);
         client.player.sendMessage(message, false);

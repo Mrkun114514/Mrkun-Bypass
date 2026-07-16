@@ -35,5 +35,9 @@
   "gui.mrkunbypass.statistics.modules_used": "Modules Toggled",
   "gui.mrkunbypass.statistics.toggles_total": "Total Toggles",
   "gui.mrkunbypass.statistics.active_modules": "Active Modules",
-  "gui.mrkunbypass.statistics.time_played": "Time Played"
+  "gui.mrkunbypass.statistics.time_played": "Time Played",
+  "message.mrkunbypass.prefix": "Mrkun Bypass",
+  "message.mrkunbypass.separator": ":",
+  "message.mrkunbypass.on": "enabled!",
+  "message.mrkunbypass.off": "disabled!"
 }

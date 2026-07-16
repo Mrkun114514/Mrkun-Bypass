@@ -20,7 +20,10 @@ public class WelcomeScreen extends Screen {
         int buttonWidth = 150;
         int x = (this.width - buttonWidth) / 2;
         int y = this.height - 50;
-        this.addRenderableWidget(Button.builder(Component.translatable("gui.mrkunbypass.welcome.got_it"), btn -> this.minecraft.setScreen(null))
+        this.addRenderableWidget(Button.builder(Component.translatable("gui.mrkunbypass.welcome.got_it"), btn -> {
+                    BypassConfig.setFirstLaunch(false);
+                    if (this.minecraft != null) this.minecraft.setScreen(null);
+                })
                 .bounds(x, y, buttonWidth, 20)
                 .build());
     }

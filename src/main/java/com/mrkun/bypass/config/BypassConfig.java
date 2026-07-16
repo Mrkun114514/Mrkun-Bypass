@@ -18,7 +18,7 @@ public class BypassConfig {
     private static final String CONFIG_FOLDER = "Mrkun_Bypass_config";
     private static final String CONFIG_FILE = "mrkun_bypass_config.json";
 
-    private static final Map<String, Boolean> MODULE_STATES = new HashMap<>();
+    private static final Map<String, Boolean> MODULE_STATES = new java.util.LinkedHashMap<>();
     private static boolean showStartupNotification = true;
     private static boolean backgroundBlur = false;
     private static boolean firstLaunch = true;

@@ -14,10 +14,10 @@ public class BypassMessage {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
-        MutableComponent prefix = Component.literal("Mrkun Bypass").withStyle(ChatFormatting.WHITE);
-        MutableComponent separator = Component.literal("：").withStyle(ChatFormatting.WHITE);
-        MutableComponent module = Component.literal(moduleName).withStyle(ChatFormatting.RED);
-        MutableComponent status = Component.literal(enabled ? "已开启！" : "已关闭！").withStyle(ChatFormatting.RED);
+        MutableComponent prefix = Component.translatable("message.mrkunbypass.prefix").withStyle(ChatFormatting.WHITE);
+        MutableComponent separator = Component.translatable("message.mrkunbypass.separator").withStyle(ChatFormatting.WHITE);
+        MutableComponent module = Component.translatable("key.mrkunbypass." + moduleName.toLowerCase()).withStyle(ChatFormatting.RED);
+        MutableComponent status = Component.translatable(enabled ? "message.mrkunbypass.on" : "message.mrkunbypass.off").withStyle(ChatFormatting.RED);
 
         MutableComponent message = prefix.append(separator).append(module)
                 .append(Component.literal(" ").withStyle(ChatFormatting.RESET)).append(status);
