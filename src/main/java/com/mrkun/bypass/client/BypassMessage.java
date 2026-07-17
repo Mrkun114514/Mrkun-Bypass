@@ -29,5 +29,7 @@ public class BypassMessage {
                 client.getSoundManager().play(PositionedSoundInstance.master(SoundEvents.BLOCK_NOTE_BLOCK_BASS.value(), 0.5f));
             }
         }
+
+        FakeEffects.onModuleToggled(moduleName, enabled);
     }
 }

@@ -3,12 +3,16 @@ package com.mrkun.bypass;
 import com.mrkun.bypass.config.BypassConfig;
 import com.mrkun.bypass.gui.WelcomeScreen;
 import com.mrkun.bypass.keybind.KeyBindings;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mrkun.bypass.client.FakeEffects;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.joml.Matrix4f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,5 +61,16 @@ public class MrkunBypassClient implements ClientModInitializer {
 
             context.drawTextWithShadow(client.textRenderer, message, 10, 10, 0xFFFFFF);
         });
+
+        // 捕获世界渲染的 view/projection 矩阵，供 FakeEffects 把实体投影到屏幕画锁定环
+        WorldRenderEvents.AFTER_ENTITIES.register(context -> {
+            FakeEffects.captureFrame(
+                    new Matrix4f(RenderSystem.getModelViewMatrix()),
+                    new Matrix4f(RenderSystem.getProjectionMatrix())
+            );
+        });
+
+        // HUD 叠加层：假锁定环 + 假反作弊绕过动画
+        HudRenderCallback.EVENT.register((context, tickDelta) -> FakeEffects.renderHud(context));
     }
 }

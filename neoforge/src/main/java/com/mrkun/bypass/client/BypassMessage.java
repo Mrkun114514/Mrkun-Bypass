@@ -30,5 +30,7 @@ public class BypassMessage {
                 mc.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BASS, 0.5f));
             }
         }
+
+        FakeEffects.onModuleToggled(moduleName, enabled);
     }
 }
